@@ -10,7 +10,7 @@ async function main() {
   console.log("Result:", is7702);
 
   const p256 = await p256Data;
-  const isValid = await isValidP256(p256);
+  const isValidAll = await isValidP256(p256);
 }
 
 main();
