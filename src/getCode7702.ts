@@ -1,6 +1,9 @@
 // src/getCode7702.ts
+import 'dotenv/config';  
 import { Address, Chain, createPublicClient, http } from "viem";
+
 const prefix770 = "0xef0100"; 
+const rpc = process.env.SEPOLIA_RPC_URL!;
 
 /** ------------------------------------------------------------
  * Checks whether the given address has 7702-style bytecode.
@@ -12,7 +15,7 @@ const prefix770 = "0xef0100";
 export async function getCode7702(address: Address, chain: Chain): Promise<boolean> {
   const client = createPublicClient({
     chain: chain,
-    transport: http(),
+    transport: http(rpc),
   });
 
   try {
