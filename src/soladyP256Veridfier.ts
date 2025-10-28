@@ -94,6 +94,11 @@ export const isValidP256 = async (
       ],
     });
     console.log("✅ strict (low-S) :", isValidStrict);
+    console.log("  hash:", p256Data.hashHex);
+    console.log("  r   :", lowSR);
+    console.log("  s   :", lowSS);
+    console.log("  x   :", p256Data.xHex);
+    console.log("  y   :", p256Data.yHex);
 
     /* 3️⃣  Lenient check (original S) ----------------------------- */
     const isValidLenient = await publicClient.readContract({

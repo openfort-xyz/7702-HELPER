@@ -2,6 +2,7 @@
 import { p256 } from "@noble/curves/p256";
 import { randomBytes } from "crypto";
 import type { Hex } from "viem";
+import { fromHex } from 'viem';
 
 /* ────────────────────────────────────────────────────────── helpers ── */
 
@@ -60,7 +61,9 @@ export const p256Data = (async () => {
 
   /* 3️⃣  CHALLENGE --------------------------------------------------- */
   //   Generate a 32-byte random message
-  const challengeBytes = randomBytes(32);
+  // const challengeBytes = randomBytes(32);
+  const challengeBytesHex = '0xc0193c8eb3d7a398290aa9f75eab5f0e682d71d6c2f0f96e16a67ed4c28f7a48';
+  const challengeBytes = fromHex(challengeBytesHex, 'bytes');
   const hashHex = toHex(challengeBytes);
 
   /* 4️⃣  SIGN -------------------------------------------------------- */

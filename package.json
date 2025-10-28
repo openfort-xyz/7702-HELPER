@@ -5,7 +5,11 @@
   "author": "0xkoiner <alexgray.bcn.esp@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "dotenv": "^16.5.0",
+    "axios": "^1.11.0",
+    "dotenv": "^16.6.1",
+    "ox": "^0.7.2",
+    "permissionless": "^0.2.54",
+    "tslib": "^2.8.1",
     "viem": "^2.29.4"
   },
   "devDependencies": {
