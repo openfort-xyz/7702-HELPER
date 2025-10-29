@@ -51,16 +51,39 @@ export async function createPaymasterData(
   validAfter: number,
   signature: Hex
 ): Promise<Hex> {
-  const mode = '0x01'; // Mode byte
   const verificationGas = toHex(paymasterVerificationGas, { size: 16 });
   const postOpGas = toHex(paymasterPostOpGas, { size: 16 });
+  const mode = '0x01'; // Mode byte
   const validUntilHex = toHex(validUntil, { size: 6 });
   const validAfterHex = toHex(validAfter, { size: 6 });
 
   return concat([
-    mode,
     verificationGas,
     postOpGas,
+    mode,
+    validUntilHex,
+    validAfterHex,
+    signature
+  ]) as Hex;
+}
+
+export async function createPaymasterDataERC20(
+  paymasterVerificationGas: bigint,
+  paymasterPostOpGas: bigint,
+  validUntil: number,
+  validAfter: number,
+  signature: Hex
+): Promise<Hex> {
+  const verificationGas = toHex(paymasterVerificationGas, { size: 16 });
+  const postOpGas = toHex(paymasterPostOpGas, { size: 16 });
+  const mode = '0x01'; // Mode byte
+  const validUntilHex = toHex(validUntil, { size: 6 });
+  const validAfterHex = toHex(validAfter, { size: 6 });
+
+  return concat([
+    verificationGas,
+    postOpGas,
+    mode,
     validUntilHex,
     validAfterHex,
     signature

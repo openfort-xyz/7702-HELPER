@@ -1,15 +1,15 @@
 import { baseSepolia } from 'viem/chains';
-import { Account, createWalletClient, hashMessage, Hex, http, recoverAddress } from 'viem'
-import { privateKeyToAccount } from 'viem/accounts'
+import { Account, createWalletClient, hashMessage, Hex, http, recoverAddress, keccak256, toBytes, serializeSignature } from 'viem'
+import { privateKeyToAccount, sign } from 'viem/accounts'
 import 'dotenv/config';
 
-const { 
-    OWNER, 
-    MANAGER, 
-    SIGNER_1, 
-    SIGNER_2, 
+const {
+    OWNER,
+    MANAGER,
+    SIGNER_1,
+    SIGNER_2,
     SIGNER_3,
-    ACCOUNT_7702 
+    ACCOUNT_7702
 } = process.env as Record<
     string,
     Hex
@@ -55,19 +55,34 @@ class WalletsClient {
         transport: http()
     });
 
-    async signMessageWithEOA(message: Hex): Promise<Hex> {
+    async signMessageWithEOA(rawHash: Hex): Promise<Hex> {
         try {
-            const signature = await signer_1.signMessage({ message });
-            const messageHash = hashMessage(message); 
-            const recovered = await recoverAddress({
-                hash: messageHash,
-                signature: signature,
-              });
+            // The paymaster wraps the hash with EIP-191, so we need to sign it the same way
+            // First, wrap the raw hash with EIP-191 message prefix
+            const wrappedHash = hashMessage({ raw: rawHash });
 
-            if (recovered != signer_1.address) {
+            // Sign the wrapped hash directly (without another EIP-191 wrap)
+            const signatureObj = await sign({
+                hash: wrappedHash,
+                privateKey: SIGNER_1
+            });
+
+            // Serialize the signature object to hex string
+            const signature = serializeSignature(signatureObj);
+
+            // Verify the signature
+            const recovered = await recoverAddress({
+                hash: wrappedHash,
+                signature: signature,
+            });
+
+            if (recovered !== signer_1.address) {
                 console.error('❌ Recovered not Match with Signer:', recovered, signer_1.address)
+                throw new Error(`Signature verification failed: expected ${signer_1.address}, got ${recovered}`)
             }
-            console.log("message", message);
+
+            console.log("rawHash", rawHash);
+            console.log("wrappedHash", wrappedHash);
             console.log("signer_1.address", signer_1.address);
             console.log("recovered", recovered);
             return signature

@@ -29,7 +29,8 @@ export const pimlicoClient: PimlicoClient = createPimlicoClient({
   }
 }) as PimlicoClient;
 
-export const paymasterClient: PaymasterClient = createPaymasterClient({ transport: http('https://public.pimlico.io/v2/11155111/rpc') }) as PaymasterClient;
+// Fixed: Changed from chain 11155111 (Ethereum Sepolia) to 84532 (Base Sepolia)
+export const paymasterClient: PaymasterClient = createPaymasterClient({ transport: http('https://public.pimlico.io/v2/84532/rpc') }) as PaymasterClient;
 
 export async function getSimpleAccount(): Promise<ToSimpleSmartAccountReturnType<'0.8', true>> {
   return await toSimpleSmartAccount({
@@ -49,7 +50,8 @@ export async function createSmartAccount(account: ToSimpleSmartAccountReturnType
     account,
     chain: baseSepolia,
     bundlerTransport: http(pimlicoUrl),
-    paymaster: pimlicoClient,
+    // Removed paymaster: pimlicoClient to allow custom PAYMASTER_V3 usage
+    // When paymaster field is included, Pimlico overrides the UserOp's paymaster field
     userOperation: {
       estimateFeesPerGas: async () => {
         return (await pimlicoClient.getUserOperationGasPrice()).fast
