@@ -113,10 +113,10 @@ async function main() {
     }, null, 2));
 
     
-    const userOperationHash = await sendUserOperation(smartAccountClient, userOp);
+    // const userOperationHash = await sendUserOperation(smartAccountClient, userOp);
 
-    const { receipt } = await waitForUserOperationReceipt(smartAccountClient, userOperationHash);
-    console.log("User operation receipt:", receipt);
+    // const { receipt } = await waitForUserOperationReceipt(smartAccountClient, userOperationHash);
+    // console.log("User operation receipt:", receipt);
 }
 
 main().catch((e) => {

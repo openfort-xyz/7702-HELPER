@@ -5,6 +5,7 @@
   "author": "0xkoiner <alexgray.bcn.esp@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@etherspot/free-bundler": "^1.0.1",
     "axios": "^1.11.0",
     "dotenv": "^16.6.1",
     "ox": "^0.7.2",

@@ -17,6 +17,7 @@ class Helpres {
   readonly VERIFYING_MODE = 0;
   readonly ERC20_MODE = 1;
   readonly MAX_UINT256 = (1n << 256n) - 1n;
+  readonly PAYMASTER_SIG_MAGIC = '0x22e325a297439656' as Hex;
   readonly ERC20_APPROVE_ABI = [
     {
       name: "approve",
@@ -258,6 +259,30 @@ class Helpres {
   appendSignatureToPaymasterData(paymasterData: Hex, signature: Hex): Hex {
     // Remove 0x from signature before concatenating
     return `${paymasterData}${signature.slice(2)}` as Hex;
+  }
+
+  createVerifyingModePaymasterDataAsync(validUntil: number, validAfter: number): Hex {
+    const modeByte = '0x00';
+    const validUntilHex = pad(toHex(validUntil), { size: 6 });
+    const validAfterHex = pad(toHex(validAfter), { size: 6 });
+
+    return concat([modeByte, validUntilHex, validAfterHex, this.PAYMASTER_SIG_MAGIC]) as Hex;
+  }
+
+  createVerifyingModePaymasterDataAsyncWithPlaceholder(validUntil: number, validAfter: number): Hex {
+    const modeByte = '0x00';
+    const validUntilHex = pad(toHex(validUntil), { size: 6 });
+    const validAfterHex = pad(toHex(validAfter), { size: 6 });
+    const placeholderLength = pad(toHex(0), { size: 2 });
+
+    return concat([modeByte, validUntilHex, validAfterHex, placeholderLength, this.PAYMASTER_SIG_MAGIC]) as Hex;
+  }
+
+  appendAsyncSignatureToPaymasterData(paymasterDataBase: Hex, signature: Hex): Hex {
+    const sigLength = (signature.length - 2) / 2;
+    const sigLengthHex = pad(toHex(sigLength), { size: 2 });
+
+    return concat([paymasterDataBase, signature, sigLengthHex, this.PAYMASTER_SIG_MAGIC]) as Hex;
   }
 }
 

@@ -37,7 +37,7 @@ export async function getDeposit(publicClient: PublicClient): Promise<bigint> {
 export async function getHash(publicClient: PublicClient, mode: number, userOp: UserOperationWithEip7702Auth): Promise<Hex> {
   const packed = toPackedFromV08(userOp);
   return await publicClient.readContract({
-    address: PAYMASTER_V3,
+    address: userOp.paymaster || PAYMASTER_V3,
     abi: ABI_PAYMASTER,
     functionName: 'getHash',
     args: [mode, packed]
