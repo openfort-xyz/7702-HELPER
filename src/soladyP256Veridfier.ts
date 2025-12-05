@@ -1,5 +1,5 @@
 // src/isValidP256.ts
-import 'dotenv/config';  
+import 'dotenv/config';
 import { sepolia } from "viem/chains";
 import { abiP256 } from "./utils/abis";
 import { createPublicClient, type Hex, http } from "viem";

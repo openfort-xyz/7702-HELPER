@@ -112,7 +112,7 @@ async function main() {
         paymasterPostOpGasLimit: userOp.paymasterPostOpGasLimit?.toString(),
     }, null, 2));
 
-    
+
     // const userOperationHash = await sendUserOperation(smartAccountClient, userOp);
 
     // const { receipt } = await waitForUserOperationReceipt(smartAccountClient, userOperationHash);

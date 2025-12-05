@@ -6,7 +6,7 @@ export interface EIP7702Authorization {
     r: `0x${string}`
     s: `0x${string}`
   }
-  
+
   /**
    * Creates EIP-7702 authorization from signature
    * @param signature - The 65-byte signature from generateRandomSignature
@@ -22,12 +22,12 @@ export interface EIP7702Authorization {
   ): EIP7702Authorization {
     // Extract r, s, v from signature (65 bytes: 32r + 32s + 1v)
     const r = signature.slice(0, 66) as `0x${string}` // 0x + 64 chars
-    const s = `0x${signature.slice(66, 130)}` as `0x${string}` // 64 chars  
+    const s = `0x${signature.slice(66, 130)}` as `0x${string}` // 64 chars
     const v = parseInt(signature.slice(130, 132), 16) // last byte
-    
+
     // Convert v to y_parity (v - 27)
     const yParity = v === 27 ? 0 : 1
-    
+
     return {
       chainId,
       address: smartAccountAddress,

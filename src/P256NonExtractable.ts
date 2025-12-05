@@ -30,8 +30,8 @@ const bigintToHex = (n: bigint): Hex => toHex32(n);
 /* ──────────────────────────────────────────────────────────── main ── */
 
 /** --------------------------------------------------------------------
- * Generates a fresh P-256 key pair using WebCrypto, signs a random 32-byte 
- * challenge, verifies the signature, and returns everything you might want 
+ * Generates a fresh P-256 key pair using WebCrypto, signs a random 32-byte
+ * challenge, verifies the signature, and returns everything you might want
  * to send on-chain (public-key coordinates, signature r & s, and the challenge).
  *
  * Returned object shape:
@@ -63,7 +63,7 @@ export const webCryptoP256Data = (async () => {
   const challengeBytesHex = '0x0377a30fcfc4671b5b2a831cb98420acddf2900115c4a26d1d8b6eb755ed4ec9';
   const challengeBytes = fromHex(challengeBytesHex, 'bytes');
   const userOpHash = toHex(challengeBytes);
-  
+
   /* 3️⃣  SIGN -------------------------------------------------------- */
   const { r, s } = await WebCryptoP256.sign({
     privateKey: privateKey,
@@ -86,7 +86,7 @@ export const webCryptoP256Data = (async () => {
   });
 
   console.log("Signature verification result:", isValid);
-  
+
   if (isValid) {
     console.log("✅ Signature is VALID!");
   } else {

@@ -63,7 +63,7 @@ export async function deposit(
         data,
         value,
         account: walletClient.account!,
-        chain: undefined,            
+        chain: undefined,
       });
 
 
@@ -79,9 +79,9 @@ export async function addStake(
     unstakeDelaySec: number | bigint,
   ): Promise<{ hash: Hex }> {
     if (!walletClient.account) throw new Error('walletClient is missing an account');
-  
+
     const delay = toUint32(unstakeDelaySec);
-  
+
     const hash = await walletClient.writeContract({
       address: PAYMASTER_V3,
       abi: ABI_PAYMASTER,
@@ -91,7 +91,7 @@ export async function addStake(
       account: walletClient.account,
       chain: undefined,
     });
-  
+
     await publicClient.waitForTransactionReceipt({ hash });
     return { hash };
 
@@ -100,19 +100,19 @@ export async function addStake(
 async function main() {
     const before = await getDeposit(publicClient);
     console.log('Before deposit:', before.toString());
-  
+
     const { hash } = await deposit(walletClient, publicClient, parseEther('1'));
     console.log('Sent deposit tx:', hash);
-  
+
     const after = await getDeposit(publicClient);
     console.log('After deposit:', after.toString());
 
     const stake = await addStake(walletClient, publicClient, parseEther('1'),  8600);
     console.log('addStake tx:', stake.hash);
-  
+
     console.log('After:', (await getDeposit(publicClient)).toString());
   }
-  
+
   main().catch((e) => {
     console.error(e);
     process.exit(1);

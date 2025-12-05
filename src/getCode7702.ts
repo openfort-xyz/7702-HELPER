@@ -1,8 +1,8 @@
 // src/getCode7702.ts
-import 'dotenv/config';  
+import 'dotenv/config';
 import { Address, Chain, createPublicClient, http } from "viem";
 
-const prefix770 = "0xef0100"; 
+const prefix770 = "0xef0100";
 const rpc = process.env.SEPOLIA_RPC_URL!;
 
 /** ------------------------------------------------------------
@@ -26,7 +26,7 @@ export async function getCode7702(address: Address, chain: Chain): Promise<boole
       return false;
     }
 
-    const prefix = code.slice(0, 8); 
+    const prefix = code.slice(0, 8);
     const designator = `0x${code.slice(8, 48)}` as Address;
 
     if (prefix.toLowerCase() === prefix770.toLowerCase()) {
