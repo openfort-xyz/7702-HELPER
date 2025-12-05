@@ -3,18 +3,19 @@ title = "Custom Gitleaks Config for Ethereum Secrets"
 [extend]
 useDefaultRules = true
 
+
+[allowlist]
+description = "global allow lists"
+paths = [
+    '''(?:^|/)node_modules(?:/.*)?$''',
+    '''node_modules/'''
+]
+
 [[rules]]
 id = "ethereum-private-key-hex"
 description = "Ethereum Private Key (64 hex chars)"
 regex = '''(?i)\b(?:0x)?([a-f0-9]{64})\b'''
 tags = ["crypto", "ethereum", "private_key", "high_entropy"]
-
-# OPTIONAL: exclude likely false positives (transaction hashes)
-# You can use path or additional regex filters, e.g.:
-# pathExclude = [
-#   '''.*tx.*''',
-#   '''.*transaction.*'''
-# ]
 
 [[rules]]
 id = "ethereum-keystore"
